@@ -29,16 +29,17 @@ class PrintController extends Controller
         Storage::put('print.html', $response->body());
         $html  = storage_path('app/print.html');
         $output = storage_path('app/image.png');
-        exec("wkhtmltoimage --format png ${html} ${output}");
+        $exec = storage_path('app/wkhtmltoimage.exe');
+        exec("${exec} --format png ${html} ${output}");
         $dest=storage_path('app/image.png');
     try {
         $img = EscposImage::load($dest);
     } catch (Exception $e) {
         throw $e;
     }
-    $printer -> bitImage($img);
+   $printer -> bitImage($img);
     
-    $printer -> cut();
+   $printer -> cut();
 } catch (Exception $e) {
     echo $e -> getMessage();
 } finally {
